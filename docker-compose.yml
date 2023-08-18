@@ -8,10 +8,10 @@ services:
       - 3306:3306
 
     environment:
-      - MYSQL_ROOT_PASSWORD=restauranteroot 
-      - MYSQL_DATABASE=santjhoanedb
-      - MYSQL_USER=restaurante
-      - MYSQL_PASSWORD=restaurantepas
+      - MYSQL_ROOT_PASSWORD=supersecretpassword 
+      - MYSQL_DATABASE=databasename
+      - MYSQL_USER=username
+      - MYSQL_PASSWORD=supersecretpassword
 
     volumes:
-      - ~/dev/docker-volumes/santjhoane/database:/var/lib/mysql
+      - ~/dev/docker-volumes/database:/var/lib/mysql
