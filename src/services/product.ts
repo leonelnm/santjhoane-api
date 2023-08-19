@@ -1,9 +1,16 @@
+import { ProductRepository } from '../repositories/product'
 import { Product } from '../types'
 
-export const getAllProducts = (): Product[] => {
-  return []
-}
+export class ProductService {
+  static async getAll(): Promise<Product[]> {
+    return await ProductRepository.findAll()
+  }
 
-export const addProduct = (): void => {
+  static async findById(id: number): Promise<Product | null> {
+    return await ProductRepository.findById(id)
+  }
 
+  static async create(data: Product): Promise<Product> {
+    return await ProductRepository.create(data)
+  }
 }

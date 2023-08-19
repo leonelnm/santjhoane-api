@@ -3,14 +3,14 @@ export interface Category {
 }
 
 export interface Product {
-  id: number
+  id?: number
   name: string
-  description: string
+  description?: string
   price: number
-  ingredients: Ingredient[]
-  categories: Category[]
-  enabled: boolean
-  isEspecial: boolean
+  // ingredients?: Ingredient[]
+  // categories?: Category[]
+  enabled?: boolean
+  isEspecial?: boolean
 }
 
 export interface Ingredient {

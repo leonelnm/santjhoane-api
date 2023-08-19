@@ -3,7 +3,7 @@ version: '3.5'
 services:
   mariadb:
     image: mariadb:10.11.5
-    command: mysqld --character-set-server=utf8 --collation-server=utf8_spanish_ci
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_spanish_ci
     ports:
       - 3306:3306
 
