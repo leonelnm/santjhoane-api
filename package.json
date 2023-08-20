@@ -10,7 +10,9 @@
     "tsc": "tsc",
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
-    "prisma:migrate": "prisma migrate dev"
+    "prisma": "prisma",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate": "prisma migrate dev --create-only"
   },
   "keywords": [],
   "author": "",

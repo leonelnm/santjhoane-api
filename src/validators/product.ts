@@ -13,9 +13,9 @@ export const produtSchema = baseSchema.extend({
 
 export const updateProductSchema = baseSchema.extend({
   body: z.object({
-    name: z.string().max(150).min(1),
+    name: z.string().max(150).min(1).optional(),
     description: z.string().max(500).optional(),
-    price: z.number().nonnegative(),
+    price: z.number().nonnegative().optional(),
     enabled: z.boolean().optional(),
     isEspecial: z.boolean().optional()
   }),
@@ -29,3 +29,7 @@ export const getProductSchema = baseSchema.extend({
     id: idSchema.optional()
   })
 })
+
+export type ProductType = z.infer<typeof produtSchema>['body']
+export type UpdateProductBodyType = z.infer<typeof updateProductSchema>['body']
+export type UpdateProductParamsType = z.infer<typeof updateProductSchema>['params']
