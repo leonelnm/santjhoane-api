@@ -1,7 +1,7 @@
 import z from 'zod'
 import { baseSchema, idSchema } from './commons'
 
-export const produtSchema = baseSchema.extend({
+export const productSchema = baseSchema.extend({
   body: z.object({
     name: z.string().max(150).min(1),
     description: z.string().max(500).optional(),
@@ -30,6 +30,6 @@ export const getProductSchema = baseSchema.extend({
   })
 })
 
-export type ProductType = z.infer<typeof produtSchema>['body']
+export type ProductType = z.infer<typeof productSchema>['body']
 export type UpdateProductBodyType = z.infer<typeof updateProductSchema>['body']
 export type UpdateProductParamsType = z.infer<typeof updateProductSchema>['params']

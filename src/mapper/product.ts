@@ -1,41 +1,32 @@
-import { Product as ProductPrisma } from '@prisma/client'
+import { Product as ProductPrisma, Prisma } from '@prisma/client'
 import { Product } from '../types'
-import { Mapper } from './base'
-import { ProductType } from '../validators/product'
 
-const ProductMapper: Mapper<ProductPrisma, Product, ProductType> = {
-  dtoToType: (dto) => {
+class ProductMapper {
+  static toCreate(type: Product): Prisma.ProductCreateInput {
     return {
-      name: dto.name,
-      description: dto.description,
-      price: dto.price,
-      enabled: dto.enabled,
-      isEspecial: dto.isEspecial
-    }
-  },
-  typeToDto: (type) => {
-    return {
-      id: type.id,
       name: type.name,
-      description: type.description,
+      description: type.description !== null ? type.description : undefined,
       price: type.price,
       enabled: type.enabled,
       isEspecial: type.isEspecial
     }
-  },
-  entityToType: (entity) => {
+  }
+
+  static toType(model: ProductPrisma): Product {
     return {
-      id: entity.id,
-      name: entity.name,
-      description: entity.description !== null ? entity.description : undefined,
-      price: entity.price.toNumber(),
-      enabled: entity.enabled,
-      isEspecial: entity.isEspecial
+      id: model.id,
+      name: model.name,
+      description: model.description !== null ? model.description : undefined,
+      price: model.price.toNumber(),
+      enabled: model.enabled,
+      isEspecial: model.isEspecial
     }
-  },
-  listEntityToListType: (entityList) => entityList.map(ProductMapper.entityToType),
-  listDtoToListType: (dtoList) => dtoList.map(ProductMapper.dtoToType),
-  listTypeToListDto: (typeList) => typeList.map(ProductMapper.typeToDto)
+  }
+
+  static toTypeList(list: ProductPrisma[]): Product[] {
+    return list.map(ProductMapper.toType)
+  }
+
 }
 
 export default ProductMapper

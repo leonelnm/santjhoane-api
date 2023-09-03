@@ -5,7 +5,7 @@ import { Product } from '../types'
 export class ProductRepository {
   static async findAll(): Promise<Product[]> {
     const list = await prisma.product.findMany()
-    return ProductMapper.listEntityToListType(list)
+    return ProductMapper.toTypeList(list)
   }
 
   static async findById(id: number): Promise<Product | null> {
@@ -13,12 +13,13 @@ export class ProductRepository {
       where: { id }
     })
 
-    return product === null ? null : ProductMapper.entityToType(product)
+    return product === null ? null : ProductMapper.toType(product)
   }
 
   static async create(data: Product): Promise<Product> {
-    return ProductMapper.entityToType(await prisma.product.create({
-      data
+    const newProduct = ProductMapper.toCreate(data);
+    return ProductMapper.toType(await prisma.product.create({
+      data: newProduct
     }))
   }
 
@@ -27,6 +28,6 @@ export class ProductRepository {
       where: { id },
       data
     })
-    return ProductMapper.entityToType(product)
+    return ProductMapper.toType(product)
   }
 }
