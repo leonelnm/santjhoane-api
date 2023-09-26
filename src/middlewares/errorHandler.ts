@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
 import { AppError } from '../errors/AppError'
+import { logger } from '../config/logger'
 
 export const errorLoggerHandler = (error: Error, _req: Request, _res: Response, next: NextFunction): void => {
-  console.log('[errorLoggerHandler]:', error)
+  // console.log('[errorLoggerHandler]:', error)
+  logger.error('[errorLoggerHandler]:', error)
   next(error)
 }
 
@@ -22,7 +24,8 @@ export function errorHandler(error: Error, _req: Request, res: Response, _next: 
 }
 
 export const pathNotFoundHandler = (req: Request, res: Response, _next: NextFunction): void => {
-  console.log(`Invalid path: [${req.method}] ${req.path} | original request: ${req.originalUrl}`)
+  console.error(`Invalid path: [${req.method}] ${req.path} | original request: ${req.originalUrl}`)
+  // console.log(`Invalid path: [${req.method}] ${req.path} | original request: ${req.originalUrl}`)
   // TODO añadir gestión de logs
 
   const errorResponse = {

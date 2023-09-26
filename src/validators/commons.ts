@@ -6,6 +6,6 @@ export const baseSchema = z.object({
   query: z.object({})
 })
 
-export const idSchema = z.string().refine(value => !isNaN(+value), {
-  message: 'The parameter "id" must be a number.'
+export const idSchema = z.string().uuid({
+  message: 'Invalid Id'
 })
