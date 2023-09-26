@@ -1,16 +1,26 @@
+import { AppError } from '../errors/AppError'
 import { ProductRepository } from '../repositories/product'
 import { Product } from '../types'
 
 export class ProductService {
-  static async getAll(): Promise<Product[]> {
-    return await ProductRepository.findAll()
+  repository: ProductRepository
+  constructor() {
+    this.repository = new ProductRepository()
   }
 
-  static async findById(id: number): Promise<Product | null> {
-    return await ProductRepository.findById(id)
+  async getAll(): Promise<Product[]> {
+    return await this.repository.findAll()
   }
 
-  static async create(data: Product): Promise<Product> {
-    return await ProductRepository.create(data)
+  async findById(id: string): Promise<Product | null> {
+    return await this.repository.findById(id)
+  }
+
+  async create(data: Product): Promise<Product> {
+    if (await this.repository.findByName(data.name) !== null) {
+      throw new AppError('Product name already exists', 400)
+    }
+
+    return await this.repository.create(data)
   }
 }

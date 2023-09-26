@@ -1,19 +1,15 @@
-import { environment } from './config/environment'
-import express from 'express'
-import { errorHandler, errorLoggerHandler, pathNotFoundHandler } from './middlewares/errorHandler'
-import { router } from './routes'
+import 'reflect-metadata'
+import { app } from './app'
+import { env } from './config/environment'
+import { logger } from './config/logger'
+import { AppDataSource } from './db/database'
 
-const app = express()
-app.disable('x-powered-by')
-app.use(express.json())
+AppDataSource.initialize()
+  .then(() => {
+    logger.info('Data Source has been initialized!')
+  })
+  .catch((error) => logger.error(error))
 
-// routes
-app.use('/api', router)
-
-app.use(errorLoggerHandler)
-app.use(errorHandler)
-app.use(pathNotFoundHandler)
-
-app.listen(environment.PORT, () => {
-  console.log(`Server running on port ${environment.PORT}`)
+app.listen(env.PORT, () => {
+  logger.info(`Server running on port ${env.PORT}`)
 })

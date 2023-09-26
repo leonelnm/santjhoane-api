@@ -3,15 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "build/index.js",
-  "type": "module",
   "scripts": {
     "clean": "rm -rf build",
     "dev": "NODE_ENV=development ts-node-dev src/index.ts",
     "lint:fix": "ts-standard --fix",
     "lint": "ts-standard",
-    "prisma:migrate:dev": "prisma migrate dev",
-    "prisma:migrate": "prisma migrate dev --create-only",
-    "prisma": "prisma",
     "start": "NODE_ENV=production node build/index.js",
     "test": "NODE_ENV=test node --test --loader tsx $(find test -name '*.test.ts')",
     "test:unit": "NODE_ENV=test node --test --loader tsx $(find test/unit -name '*.test.ts')",
@@ -25,14 +21,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "5.2.0",
     "dotenv": "16.3.1",
     "express": "4.18.2",
+    "mysql2": "3.6.1",
+    "reflect-metadata": "0.1.13",
+    "typeorm": "0.3.17",
+    "winston": "3.10.0",
     "zod": "3.22.2"
   },
   "devDependencies": {
     "@types/express": "4.17.17",
-    "prisma": "5.2.0",
     "ts-node-dev": "2.0.0",
     "ts-standard": "12.0.2",
     "tsx": "3.12.7",
@@ -50,13 +48,11 @@
       "space-before-function-paren": "off",
       "@typescript-eslint/space-before-function-paren": "off",
       "@typescript-eslint/no-extraneous-class": "off",
-      "@typescript-eslint/no-misused-promises": "off"
+      "@typescript-eslint/no-misused-promises": "off",
+      "@typescript-eslint/indent": "off"
     },
     "parserOptions": {
       "project": "./tsconfig.json"
     }
-  },
-  "prisma": {
-    "schema": "./src/db/prisma/schema.prisma"
   }
 }

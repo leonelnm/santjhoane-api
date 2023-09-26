@@ -1,33 +1,47 @@
-import { prisma } from '../db/prisma/client'
+
+import { Repository } from 'typeorm'
+import { AppDataSource } from '../db/database'
 import ProductMapper from '../mapper/product'
-import { Product } from '../types'
+import { ProductEntity } from '../models/product.entity'
+import { Product as ProductType } from '../types'
 
 export class ProductRepository {
-  static async findAll(): Promise<Product[]> {
-    const list = await prisma.product.findMany()
+  private readonly repository: Repository<ProductEntity>
+
+  constructor() {
+    this.repository = AppDataSource.getRepository(ProductEntity)
+  }
+
+  async findAll(): Promise<ProductType[]> {
+    const list = await this.repository.find()
     return ProductMapper.toTypeList(list)
   }
 
-  static async findById(id: number): Promise<Product | null> {
-    const product = await prisma.product.findUnique({
+  async findById(id: string): Promise<ProductType | null> {
+    const product = await this.repository.findOne({
       where: { id }
     })
 
     return product === null ? null : ProductMapper.toType(product)
   }
 
-  static async create(data: Product): Promise<Product> {
-    const newProduct = ProductMapper.toCreate(data);
-    return ProductMapper.toType(await prisma.product.create({
-      data: newProduct
-    }))
+  async create(data: ProductType): Promise<ProductType> {
+    const newProduct = ProductMapper.toCreate(data)
+    return ProductMapper.toType(
+      await this.repository.save(newProduct)
+    )
   }
 
-  static async update(id: number, data: Partial<Product>): Promise<Product> {
-    const product = await prisma.product.update({
-      where: { id },
-      data
-    })
+  async update(_id: number, data: Partial<ProductType>): Promise<ProductType> {
+    const product = await this.repository.save(data)
     return ProductMapper.toType(product)
+  }
+
+  async findByName(name: string): Promise<ProductType | null> {
+    const product = await this.repository.findOne({
+      where: { name }
+    })
+
+    return product === null ? null : ProductMapper.toType(product)
   }
 }

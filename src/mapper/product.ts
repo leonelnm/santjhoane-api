@@ -1,8 +1,8 @@
-import { Product as ProductPrisma, Prisma } from '@prisma/client'
-import { Product } from '../types'
+import { ProductEntity } from '../models/product.entity'
+import { Product as ProductType } from '../types'
 
 class ProductMapper {
-  static toCreate(type: Product): Prisma.ProductCreateInput {
+  static toCreate(type: ProductType): any {
     return {
       name: type.name,
       description: type.description !== null ? type.description : undefined,
@@ -12,21 +12,20 @@ class ProductMapper {
     }
   }
 
-  static toType(model: ProductPrisma): Product {
+  static toType(model: ProductEntity): ProductType {
     return {
       id: model.id,
       name: model.name,
       description: model.description !== null ? model.description : undefined,
-      price: model.price.toNumber(),
+      price: model.price,
       enabled: model.enabled,
       isEspecial: model.isEspecial
     }
   }
 
-  static toTypeList(list: ProductPrisma[]): Product[] {
+  static toTypeList(list: ProductEntity[]): ProductType[] {
     return list.map(ProductMapper.toType)
   }
-
 }
 
 export default ProductMapper

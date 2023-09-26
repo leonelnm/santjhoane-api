@@ -5,15 +5,17 @@ import { Product } from '../types'
 import { UpdateProductBodyType, UpdateProductParamsType } from '../validators/product'
 import { NotFoundError } from '../errors/NotFoundError'
 
+const productService = new ProductService()
+
 export const getAllProducts = async (_req: Request, res: Response): Promise<void> => {
-  const data = await ProductService.getAll()
+  const data = await productService.getAll()
   res.json(data)
 }
 
 export const findProductById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { id } = req.params
-    const data = await ProductService.findById(+id)
+    const data = await productService.findById(id)
     if (data === null) throw new NotFoundError(`Product ${id} not found`)
     res.json(data)
   } catch (error) {
@@ -24,7 +26,7 @@ export const findProductById = async (req: Request, res: Response, next: NextFun
 export const createProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const data: Product = req.body
-    const product = await ProductService.create(data)
+    const product = await productService.create(data)
     if (product === null) throw new AppError('Product not created', 400)
     res.json(product)
   } catch (error) {
